@@ -2,6 +2,9 @@ import { type TMenuConfig } from '@/components/menu';
 
 export const MENU_SIDEBAR: TMenuConfig = [
   {
+    heading: 'General'
+  },
+  {
     title: 'Dashboards',
     icon: 'element-11',
     children: [
@@ -14,6 +17,102 @@ export const MENU_SIDEBAR: TMenuConfig = [
         path: '/dark-sidebar'
       }
     ]
+  },
+  {
+    title: 'Parties',
+    icon: 'users',
+    children: [
+      {
+        title: 'Persons',
+        path: '/parties/persons'
+      }]
+  },
+  {
+    title: 'Items',
+    icon: 'archive',
+    children: [
+      {
+        title: 'Inventory',
+        path: '/items/items'
+      },
+      {
+        title: 'Godown',
+        path: '/items/godown'
+      }
+    ]
+  },
+  {
+    title: 'Quotes',
+    icon: 'document',
+    children: [
+      {
+        title: 'Quotes',
+        path: '/quotes/list'
+      },
+      {
+        title: 'Godown',
+        path: '/quotes/create'
+      }
+    ]
+  },
+  {
+    title: 'Sales',
+    icon: 'chart',
+    children: [
+      {
+        title: 'Invoices',
+        path: '/sales/invoices'
+      },
+      {
+        title: 'Payment In',
+        path: '/sales/payment-ins'
+      },
+      {
+        title: 'Credit Note',
+        path: '/sales/credit-note'
+      }
+    ]
+  },
+  {
+    title: 'Purchases',
+    icon: 'basket',
+    children: [
+      {
+        title: 'Invoices',
+        path: '/purchases/invoices'
+      },
+      {
+        title: 'Payment Out',
+        path: '/purchases/payment-outs'
+      },
+      {
+        title: 'Debit Note',
+        path: '/purchases/debit-note'
+      }
+    ]
+  },
+  {
+    title: 'Reports',
+    icon: 'graph',
+    path: '/reports/reports'
+  },
+  {
+    heading: 'Accounting'
+  },
+  {
+    title: 'Payable',
+    icon: 'tag',
+    path: '/accounting/payables'
+  },
+  {
+    title: 'Receivables',
+    icon: 'cheque',
+    path: '/accounting/receivables'
+  },
+  {
+    title: 'Expense',
+    icon: 'wallet',
+    path: '/accounting/expense'
   },
   {
     heading: 'User'
@@ -494,7 +593,16 @@ export const MENU_SIDEBAR: TMenuConfig = [
   {
     title: 'User Management',
     icon: 'users',
-    disabled: true
+    children: [
+      {
+        title: 'Users',
+        path: '/user-management/users'
+      },
+      {
+        title: 'Roles',
+        path: '/user-management/roles'
+      }
+    ]
   },
   {
     title: 'Projects',
