@@ -38,6 +38,6 @@ export type Person = {
   mobile: string;
   email: string;
   gst: string;
-  person_type_id: number;
+  person_type: string;
   personType: PersonType;
 };

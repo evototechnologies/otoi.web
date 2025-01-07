@@ -1,23 +1,44 @@
-import { Fragment } from 'react';
-
-import { Container } from '@/components/container';
+import { Fragment, useEffect, useState } from "react";
+import { ModalPerson } from "./blocks/persons";
+import { Container } from "@/components/container";
 import {
   Toolbar,
   ToolbarActions,
   ToolbarDescription,
   ToolbarHeading,
-  ToolbarPageTitle
-} from '@/partials/toolbar';
+  ToolbarPageTitle,
+} from "@/partials/toolbar";
 
-import { PartiesPersonContent } from './PartiesPersonsContent';
-import { useLayout } from '@/providers';
+import { PartiesPersonContent } from "./PartiesPersonsContent";
+import { useLayout } from "@/providers";
 
-const PartiesPersonsPage = () => {
+export interface IPersonModalContentProps {
+  state: boolean;
+}
+
+const PersonModalContent = ({ state }: IPersonModalContentProps) => {
+  const [personModalOpen, setPersonModalOpen] = useState(state);
+  const handleClose = () => {
+    setPersonModalOpen(false);
+  };
+  return <ModalPerson open={personModalOpen} onOpenChange={handleClose} />;
+};
+
+const PartiesPersonsPage = ({ state }: IPersonModalContentProps) => {
   const { currentLayout } = useLayout();
-
+  // state management
+  const [personModalOpen, setPersonModalOpen] = useState(state);
+  // handle close
+  const handleClose = () => {
+    setPersonModalOpen(false);
+  };
+  const openPersonModal = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    setPersonModalOpen(true);
+  };
   return (
     <Fragment>
-      {currentLayout?.name === 'demo1-layout' && (
+      {currentLayout?.name === "demo1-layout" && (
         <Container>
           <Toolbar>
             <ToolbarHeading>
@@ -35,8 +56,8 @@ const PartiesPersonsPage = () => {
               <a href="#" className="btn btn-sm btn-light">
                 Import CSV
               </a>
-              <a href="#" className="btn btn-sm btn-primary">
-                Add Member
+              <a className="btn btn-sm btn-primary" onClick={openPersonModal}>
+                Add Person
               </a>
             </ToolbarActions>
           </Toolbar>
@@ -45,6 +66,7 @@ const PartiesPersonsPage = () => {
 
       <Container>
         <PartiesPersonContent />
+        <ModalPerson open={personModalOpen} onOpenChange={handleClose} /> 
       </Container>
     </Fragment>
   );
