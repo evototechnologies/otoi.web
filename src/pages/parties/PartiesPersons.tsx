@@ -16,18 +16,10 @@ export interface IPersonModalContentProps {
   state: boolean;
 }
 
-const PersonModalContent = ({ state }: IPersonModalContentProps) => {
-  const [personModalOpen, setPersonModalOpen] = useState(state);
-  const handleClose = () => {
-    setPersonModalOpen(false);
-  };
-  return <ModalPerson open={personModalOpen} onOpenChange={handleClose} />;
-};
-
-const PartiesPersonsPage = ({ state }: IPersonModalContentProps) => {
+const PartiesPersonsPage = () => {
   const { currentLayout } = useLayout();
   // state management
-  const [personModalOpen, setPersonModalOpen] = useState(state);
+  const [personModalOpen, setPersonModalOpen] = useState(false);
   // handle close
   const handleClose = () => {
     setPersonModalOpen(false);
