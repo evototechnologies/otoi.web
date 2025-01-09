@@ -191,7 +191,10 @@ const Users = () => {
                 type="text"
                 placeholder="Search users"
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  console.log('Search Input:', e.target.value);
+                }}
               />
             </label>
           </div>
@@ -208,14 +211,15 @@ const Users = () => {
               </SelectContent>
             </Select>
 
-            <Select defaultValue="latest">
+            <Select defaultValue="">
               <SelectTrigger className="w-28" size="sm">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent className="w-32">
-                <SelectItem value="latest">Latest</SelectItem>
-                <SelectItem value="older">Older</SelectItem>
-                <SelectItem value="oldest">Oldest</SelectItem>
+              <SelectItem value="">All</SelectItem>
+                <SelectItem value="1">Customer</SelectItem>
+                <SelectItem value="2">Vendor</SelectItem>
+                <SelectItem value="3">Provider</SelectItem>
               </SelectContent>
             </Select>
 

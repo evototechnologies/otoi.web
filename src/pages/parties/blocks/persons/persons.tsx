@@ -26,14 +26,6 @@ interface IColumnFilterProps<TData, TValue> {
   column: Column<TData, TValue>;
 }
 
-const EnforceSwitch = ({ enforce }: { enforce: boolean }) => {
-  return (
-    <label className="switch switch-sm">
-      <input type="checkbox" checked={enforce} value="1" readOnly />
-    </label>
-  );
-};
-
 type PersonsQueryApiResponse = QueryApiResponse<Person>;
 
 const Persons = () => {
@@ -42,6 +34,7 @@ const Persons = () => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
+        console.log("Enter pressed for search");
         column.setFilterValue(inputValue); // Apply the filter only on Enter
       }
     };
@@ -177,10 +170,10 @@ const Persons = () => {
         });
       }
 
-      const apiUrl = "http://127.0.0.1:5000/persons/"
+      const apiUrl = "http://127.0.0.1:5000/persons/";
       const response = await axios.get<PersonsQueryApiResponse>(
         //`${import.meta.env.VITE_APP_API_URL}/users/query?${queryParams.toString()}`
-        `${apiUrl}?${queryParams.toString()}`
+        `${apiUrl}?${queryParams.toString()}`,
       );
 
       return {
@@ -193,13 +186,13 @@ const Persons = () => {
         description: `An error occurred while fetching data. Please try again later`,
         action: {
           label: "Ok",
-          onClick: () => console.log("Ok")
-        }
+          onClick: () => console.log("Ok"),
+        },
       });
 
       return {
         data: [],
-        totalCount: 0
+        totalCount: 0,
       };
     }
   };
@@ -212,30 +205,47 @@ const Persons = () => {
         description: `Selected row IDs: ${selectedRowIds}`,
         action: {
           label: "Undo",
-          onClick: () => console.log("Undo")
-        }
+          onClick: () => console.log("Undo"),
+        },
       });
     }
   };
 
-  const Toolbar = () => {
-    const { table } = useDataGrid();
-    const [searchInput, setSearchInput] = useState("");
+  // Handle search query submission
+  const handleSearch = (query: string) => {
 
+  };
+
+  const Toolbar = ({ onSearch }: { onSearch: (query: string) => void }) => {
+    const [searchInput, setSearchInput] = useState("");
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter") {
+        setSearchQuery(searchInput); // Apply the filter only on Enter
+        onSearch(searchInput);
+      }
+    };
+    
     return (
       <div className="card-header flex-wrap gap-2 border-b-0 px-5">
-        <h3 className="card-title font-medium text-sm">showing 10 of 49,053 users</h3>
-
+        <h3 className="card-title font-medium text-sm">
+        </h3>
         <div className="flex flex-wrap gap-2 lg:gap-5">
           <div className="flex">
             <label className="input input-sm">
               <KeenIcon icon="magnifier" />
-              <input
+              <Input
+                placeholder="Search persons"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={handleKeyDown} // Trigger filter on Enter key
+                className="h-9 w-full max-w-40"
+              />
+              {/* <input
                 type="text"
                 placeholder="Search users"
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
+                onChange={(e) => setSearchQuery(e.target.value)}
+              /> */}
             </label>
           </div>
 
@@ -251,17 +261,17 @@ const Persons = () => {
               </SelectContent>
             </Select>
 
-            <Select defaultValue="latest">
+            <Select defaultValue="-1">
               <SelectTrigger className="w-28" size="sm">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent className="w-32">
-                <SelectItem value="latest">Latest</SelectItem>
-                <SelectItem value="older">Older</SelectItem>
-                <SelectItem value="oldest">Oldest</SelectItem>
+                <SelectItem value="-1">All</SelectItem>
+                <SelectItem value="1">Customer</SelectItem>
+                <SelectItem value="2">Vendor</SelectItem>
+                <SelectItem value="3">Provider</SelectItem>
               </SelectContent>
             </Select>
-
             <button className="btn btn-sm btn-outline btn-primary">
               <KeenIcon icon="setting-4" /> Filters
             </button>
@@ -279,7 +289,7 @@ const Persons = () => {
       getRowId={(row: any) => row.id}
       onRowSelectionChange={handleRowSelection}
       pagination={{ size: 5 }}
-      toolbar={<Toolbar />}
+      toolbar={<Toolbar onSearch={handleSearch} />}
       layout={{ card: true }}
     />
   );
