@@ -13,7 +13,7 @@ import * as authHelper from '../_helpers';
 import { type AuthModel, type UserModel } from '@/auth';
 
 const API_URL = 'https://preview.keenthemes.com/hero-api/api'; // import.meta.env.VITE_APP_API_URL;
-console.log(API_URL);
+console.log(import.meta.env.VITE_APP_API_URL);
 export const LOGIN_URL = `${API_URL}/login`;
 export const REGISTER_URL = `${API_URL}/register`;
 export const FORGOT_PASSWORD_URL = `${API_URL}/forgot-password`;
@@ -87,7 +87,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const register = async (email: string, password: string, password_confirmation: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    password_confirmation: string,
+  ) => {
     try {
       const { data: auth } = await axios.post(REGISTER_URL, {
         email,

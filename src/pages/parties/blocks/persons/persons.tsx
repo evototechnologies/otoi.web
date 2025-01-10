@@ -6,9 +6,8 @@ import {
   DataGridColumnHeader,
   TDataGridRequestParams,
   KeenIcon,
-  useDataGrid,
   DataGridRowSelectAll,
-  DataGridRowSelect
+  DataGridRowSelect,
 } from "@/components";
 import { ColumnDef, Column, RowSelectionState } from "@tanstack/react-table";
 import {
@@ -29,8 +28,12 @@ interface IColumnFilterProps<TData, TValue> {
 type PersonsQueryApiResponse = QueryApiResponse<Person>;
 
 const Persons = () => {
-  const ColumnInputFilter = <TData, TValue>({ column }: IColumnFilterProps<TData, TValue>) => {
-    const [inputValue, setInputValue] = useState((column.getFilterValue() as string) ?? "");
+  const ColumnInputFilter = <TData, TValue>({
+    column,
+  }: IColumnFilterProps<TData, TValue>) => {
+    const [inputValue, setInputValue] = useState(
+      (column.getFilterValue() as string) ?? ""
+    );
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
@@ -63,8 +66,8 @@ const Persons = () => {
         enableSorting: false,
         enableHiding: false,
         meta: {
-          headerClassName: "w-0"
-        }
+          headerClassName: "w-0",
+        },
       },
       {
         accessorFn: (row) => row.first_name,
@@ -78,7 +81,7 @@ const Persons = () => {
         ),
         enableSorting: true,
         cell: (info: any) => (
-          <div className="flex items-center gap-2.5"> 
+          <div className="flex items-center gap-2.5">
             <div className="flex flex-col">
               <a
                 className="font-medium text-sm text-gray-900 hover:text-primary-active mb-px"
@@ -86,64 +89,83 @@ const Persons = () => {
               >
                 {info.row.original.first_name} {info.row.original.last_name}
               </a>
-              <a className="text-2sm text-gray-700 font-normal hover:text-primary-active" href="#">
+              <a
+                className="text-2sm text-gray-700 font-normal hover:text-primary-active"
+                href="#"
+              >
                 {info.row.original.email}
               </a>
             </div>
           </div>
         ),
         meta: {
-          headerClassName: "min-w-[300px]"
-        }
+          headerClassName: "min-w-[300px]",
+        },
       },
       {
         accessorFn: (row: Person) => row.gst,
         id: "gst",
-        header: ({ column }) => <DataGridColumnHeader title="GST" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="GST" column={column} />
+        ),
         enableSorting: true,
-        cell: (info: any) => {return info.row.original.gst},
+        cell: (info: any) => {
+          return info.row.original.gst;
+        },
         meta: {
           headerClassName: "min-w-[137px]",
-          cellClassName: "text-gray-800 font-medium"
-        }
+          cellClassName: "text-gray-800 font-medium",
+        },
       },
       {
         accessorFn: (row: Person) => row.mobile,
         id: "mobile",
-        header: ({ column }) => <DataGridColumnHeader title="Mobile" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Mobile" column={column} />
+        ),
         enableSorting: true,
-        cell: (info: any) => {return info.row.original.mobile},
+        cell: (info: any) => {
+          return info.row.original.mobile;
+        },
         meta: {
           headerClassName: "min-w-[137px]",
-          cellClassName: "text-gray-800 font-medium"
-        }
+          cellClassName: "text-gray-800 font-medium",
+        },
       },
       {
         accessorFn: (row: Person) => row.person_type,
         id: "type",
-        header: ({ column }) => <DataGridColumnHeader title="Type" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Type" column={column} />
+        ),
         enableSorting: true,
-        cell: (info: any) => {return info.row.original.person_type},
+        cell: (info: any) => {
+          return info.row.original.person_type;
+        },
         meta: {
           headerClassName: "min-w-[137px]",
-          cellClassName: "text-gray-800 font-medium"
-        }
+          cellClassName: "text-gray-800 font-medium",
+        },
       },
       {
         id: "actions",
-        header: ({ column }) => <DataGridColumnHeader title="Invoices" column={column} />,
+        header: ({ column }) => (
+          <DataGridColumnHeader title="Invoices" column={column} />
+        ),
         enableSorting: true,
         cell: () => <button className="btn btn-link">Download</button>,
         meta: {
           headerClassName: "w-28",
-          cellClassName: "text-gray-800 font-medium"
-        }
-      }
+          cellClassName: "text-gray-800 font-medium",
+        },
+      },
     ],
     []
   );
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchPersonTypeQuery, setPersonTypeQuery] = useState("-1");
+  const [refreshKey, setRefreshKey] = useState(0); // Unique key to trigger DataGrid reload
 
   const fetchUsers = async (params: TDataGridRequestParams) => {
     try {
@@ -161,6 +183,10 @@ const Persons = () => {
         queryParams.set("query", searchQuery);
       }
 
+      if (searchPersonTypeQuery != "-1") {
+        queryParams.set("person_type", searchPersonTypeQuery);
+      }
+
       // Column filters
       if (params.columnFilters) {
         params.columnFilters.forEach(({ id, value }) => {
@@ -173,12 +199,12 @@ const Persons = () => {
       const apiUrl = "http://127.0.0.1:5000/persons/";
       const response = await axios.get<PersonsQueryApiResponse>(
         //`${import.meta.env.VITE_APP_API_URL}/users/query?${queryParams.toString()}`
-        `${apiUrl}?${queryParams.toString()}`,
+        `${apiUrl}?${queryParams.toString()}`
       );
 
       return {
         data: response.data.data, // Server response data
-        totalCount: response.data.pagination.total // Total count for pagination
+        totalCount: response.data.pagination.total, // Total count for pagination
       };
     } catch (error) {
       console.log(error);
@@ -199,7 +225,6 @@ const Persons = () => {
 
   const handleRowSelection = (state: RowSelectionState) => {
     const selectedRowIds = Object.keys(state);
-
     if (selectedRowIds.length > 0) {
       toast(`Total ${selectedRowIds.length} are selected.`, {
         description: `Selected row IDs: ${selectedRowIds}`,
@@ -213,55 +238,69 @@ const Persons = () => {
 
   // Handle search query submission
   const handleSearch = (query: string) => {
-
+    setSearchQuery(query);
+    setRefreshKey((prev) => prev + 1); // Update the refresh key to force DataGrid reload
   };
 
-  const Toolbar = ({ onSearch }: { onSearch: (query: string) => void }) => {
-    const [searchInput, setSearchInput] = useState("");
+  // Handle search query submission
+  const handlePersonTypeSearch = (query: string) => {
+    setPersonTypeQuery(query);
+    setRefreshKey((prev) => prev + 1); // Update the refresh key to force DataGrid reload
+    console.log("Handle PersonTypeSearch");
+  };
+
+  const Toolbar = ({ 
+    defaultSearch,
+    setSearch,
+    defaultPersonType,
+    setDefaultPersonType,
+  }: {
+    defaultSearch: string;
+    setSearch: (query: string) => void;
+    defaultPersonType: string;
+    setDefaultPersonType: (query: string) => void;
+  }) => {
+    const [searchInput, setSearchInput] = useState(defaultSearch);
+    const [searchPersonType, setPersonType] = useState(defaultPersonType);
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
-        setSearchQuery(searchInput); // Apply the filter only on Enter
-        onSearch(searchInput);
+        setSearch(searchInput);
       }
     };
-    
+    // Handle onChange event
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchInput(e.target.value); // Update the input value
+    };
+    const handlePersonTypeChange = (personType: string) => {
+      setPersonType(personType);
+      console.log("Person Type", searchPersonType);
+      setDefaultPersonType(personType);
+    };
     return (
       <div className="card-header flex-wrap gap-2 border-b-0 px-5">
-        <h3 className="card-title font-medium text-sm">
-        </h3>
+        <h3 className="card-title font-medium text-sm"></h3>
         <div className="flex flex-wrap gap-2 lg:gap-5">
           <div className="flex">
             <label className="input input-sm">
               <KeenIcon icon="magnifier" />
-              <Input
-                placeholder="Search persons"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={handleKeyDown} // Trigger filter on Enter key
-                className="h-9 w-full max-w-40"
-              />
-              {/* <input
+              <input
                 type="text"
                 placeholder="Search users"
                 value={searchInput}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              /> */}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown} // Trigger filter on Enter key
+              />
             </label>
           </div>
 
           <div className="flex flex-wrap gap-2.5">
-            <Select defaultValue="active">
-              <SelectTrigger className="w-28" size="sm">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent className="w-32">
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="disabled">Disabled</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select defaultValue="-1">
+            <label className="select-sm"> Person Type </label> 
+            <Select
+              defaultValue=""
+              value={searchPersonType}
+              onValueChange={(value) => handlePersonTypeChange(value)}
+            >
               <SelectTrigger className="w-28" size="sm">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
@@ -282,6 +321,7 @@ const Persons = () => {
   };
   return (
     <DataGrid
+      key={refreshKey} // Ensure DataGrid reloads when refreshKey changes
       columns={columns}
       serverSide={true}
       onFetchData={fetchUsers}
@@ -289,7 +329,14 @@ const Persons = () => {
       getRowId={(row: any) => row.id}
       onRowSelectionChange={handleRowSelection}
       pagination={{ size: 5 }}
-      toolbar={<Toolbar onSearch={handleSearch} />}
+      toolbar={
+        <Toolbar
+          defaultSearch={searchQuery}
+          setSearch={handleSearch}
+          defaultPersonType={searchPersonTypeQuery}
+          setDefaultPersonType={handlePersonTypeSearch}
+        />
+      }
       layout={{ card: true }}
     />
   );

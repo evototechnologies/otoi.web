@@ -29,7 +29,7 @@ const initialValues = {
   mobile: "",
   email: "",
   gst: "",
-  person_type_id: ""
+  person_type_id: "",
 };
 
 const savePersonSchema = Yup.object().shape({
@@ -50,11 +50,8 @@ const savePersonSchema = Yup.object().shape({
     .min(3, "Minimum 3 symbols")
     .max(50, "Maximum 50 symbols")
     .required("Email is required"),
-  gst: Yup.string()
-    .min(15, "Minimum 15 symbols")
-    .max(15, "Maximum 15 symbols"),
-  person_type_id: Yup.string() 
-    .required("Person Type is required")
+  gst: Yup.string().min(15, "Minimum 15 symbols").max(15, "Maximum 15 symbols"),
+  person_type_id: Yup.string().required("Person Type is required"),
 });
 
 
@@ -81,6 +78,7 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
         };
         const apiUrl = "http://127.0.0.1:5000/persons/";
         await axios.post(`${apiUrl}`, postData);
+        onOpenChange();
         navigate(from, { replace: true });
       } catch (error) {
         console.error(error);
@@ -199,7 +197,6 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
                         </span>
                       )}
                     </div>
-
                     <div className="flex flex-col gap-1">
                       <label className="form-label text-gray-900">GST</label>
                       <label className="input">
@@ -262,7 +259,7 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
                       </button>
                     </div>
                 </form>
-          </div>
+              </div>
           </DialogBody>
         </DialogContent>
       </Dialog>

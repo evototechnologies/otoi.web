@@ -18,7 +18,7 @@ export interface IPersonModalContentProps {
 
 const PartiesPersonsPage = () => {
   const { currentLayout } = useLayout();
-  // state management
+
   const [personModalOpen, setPersonModalOpen] = useState(false);
   // handle close
   const handleClose = () => {
