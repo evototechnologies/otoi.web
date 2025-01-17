@@ -196,10 +196,8 @@ const Persons = () => {
         });
       }
 
-      const apiUrl = "http://127.0.0.1:5000/persons/";
       const response = await axios.get<PersonsQueryApiResponse>(
-        //`${import.meta.env.VITE_APP_API_URL}/users/query?${queryParams.toString()}`
-        `${apiUrl}?${queryParams.toString()}`
+        `${import.meta.env.VITE_APP_API_URL}/persons?${queryParams.toString()}`,
       );
 
       return {
@@ -278,8 +276,8 @@ const Persons = () => {
       setDefaultPersonType(personType);
     };
     return (
-      <div className="card-header flex-wrap gap-2 border-b-0 px-5">
-        <h3 className="card-title font-medium text-sm"></h3>
+      <div className="card-header flex justify-between flex-wrap gap-2 border-b-0 px-5">
+        {/* <h3 className="card-title font-medium text-sm"></h3> */}
         <div className="flex flex-wrap gap-2 lg:gap-5">
           <div className="flex">
             <label className="input input-sm">
@@ -293,9 +291,8 @@ const Persons = () => {
               />
             </label>
           </div>
-
           <div className="flex flex-wrap gap-2.5">
-            <label className="select-sm"> Person Type </label> 
+            <label className="select-sm"> Person Type </label>
             <Select
               defaultValue=""
               value={searchPersonType}
@@ -311,9 +308,6 @@ const Persons = () => {
                 <SelectItem value="3">Provider</SelectItem>
               </SelectContent>
             </Select>
-            <button className="btn btn-sm btn-outline btn-primary">
-              <KeenIcon icon="setting-4" /> Filters
-            </button>
           </div>
         </div>
       </div>

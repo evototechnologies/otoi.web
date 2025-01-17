@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from "axios";
 import {
   createContext,
   type Dispatch,
@@ -7,18 +7,17 @@ import {
   type SetStateAction,
   useEffect,
   useState
-} from 'react';
+} from "react";
 
-import * as authHelper from '../_helpers';
-import { type AuthModel, type UserModel } from '@/auth';
+import * as authHelper from "../_helpers";
+import { type AuthModel, type UserModel } from "@/auth";
 
-const API_URL = 'https://preview.keenthemes.com/hero-api/api'; // import.meta.env.VITE_APP_API_URL;
-console.log(import.meta.env.VITE_APP_API_URL);
-export const LOGIN_URL = `${API_URL}/login`;
+const API_URL = import.meta.env.VITE_APP_API_URL; //"https://preview.keenthemes.com/hero-api/api";
+export const LOGIN_URL = `${API_URL}/auth/login`;
 export const REGISTER_URL = `${API_URL}/register`;
 export const FORGOT_PASSWORD_URL = `${API_URL}/forgot-password`;
 export const RESET_PASSWORD_URL = `${API_URL}/reset-password`;
-export const GET_USER_URL = `${API_URL}/user`;
+export const GET_USER_URL = `${API_URL}/user/profile`;
 
 interface AuthContextProps {
   loading: boolean;
@@ -31,13 +30,17 @@ interface AuthContextProps {
   loginWithGoogle?: () => Promise<void>;
   loginWithFacebook?: () => Promise<void>;
   loginWithGithub?: () => Promise<void>;
-  register: (email: string, password: string, password_confirmation: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    password_confirmation: string,
+  ) => Promise<void>;
   requestPasswordResetLink: (email: string) => Promise<void>;
   changePassword: (
     email: string,
     token: string,
     password: string,
-    password_confirmation: string
+    password_confirmation: string,
   ) => Promise<void>;
   getUser: () => Promise<AxiosResponse<any>>;
   logout: () => void;
@@ -76,7 +79,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     try {
       const { data: auth } = await axios.post<AuthModel>(LOGIN_URL, {
         email,
-        password
+        password,
       });
       saveAuth(auth);
       const { data: user } = await getUser();

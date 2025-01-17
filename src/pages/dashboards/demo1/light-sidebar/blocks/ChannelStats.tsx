@@ -13,16 +13,16 @@ interface IChannelStatsItems extends Array<IChannelStatsItem> {}
 
 const ChannelStats = () => {
   const items: IChannelStatsItems = [
-    { logo: 'linkedin-2.svg', info: '9.3k', desc: 'Amazing mates', path: '' },
-    { logo: 'youtube-2.svg', info: '24k', desc: 'Lessons Views', path: '' },
-    { logo: 'instagram-03.svg', info: '608', desc: 'New subscribers', path: '' },
-    {
-      logo: 'tiktok.svg',
-      logoDark: 'tiktok-dark.svg',
-      info: '2.5k',
-      desc: 'Stream audience',
-      path: ''
-    }
+    { logo: 'to-collect.svg', info: '9.3k', desc: 'To Collect', path: '' },
+    { logo: 'to-pay.svg', info: '24k', desc: 'To Pay', path: '' },
+    { logo: 'bank.svg', info: '34K', desc: 'Bank', path: '' },
+    // {
+    //   logo: 'tiktok.svg',
+    //   logoDark: 'tiktok-dark.svg',
+    //   info: '2.5k',
+    //   desc: 'Stream audience',
+    //   path: ''
+    // }
   ];
 
   const renderItem = (item: IChannelStatsItem, index: number) => {
@@ -31,27 +31,12 @@ const ChannelStats = () => {
         key={index}
         className="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg"
       >
-        {item.logoDark ? (
-          <>
-            <img
-              src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)}
-              className="dark:hidden w-7 mt-4 ms-5"
-              alt=""
-            />
-            <img
-              src={toAbsoluteUrl(`/media/brand-logos/${item.logoDark}`)}
-              className="light:hidden w-7 mt-4 ms-5"
-              alt=""
-            />
-          </>
-        ) : (
-          <img
+        {/* <img
             src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)}
             className="w-7 mt-4 ms-5"
             alt=""
-          />
-        )}
-
+        /> */}
+        <i className="ki-filled ki-tag text-lg"></i>
         <div className="flex flex-col gap-1 pb-4 px-5">
           <span className="text-3xl font-semibold text-gray-900">{item.info}</span>
           <span className="text-2sm font-normal text-gray-700">{item.desc}</span>

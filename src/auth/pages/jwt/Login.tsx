@@ -1,31 +1,31 @@
-import { type MouseEvent, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import { KeenIcon } from '@/components';
-import { toAbsoluteUrl } from '@/utils';
-import { useAuthContext } from '@/auth';
-import { useLayout } from '@/providers';
-import { Alert } from '@/components';
+import { type MouseEvent, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import clsx from "clsx";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { KeenIcon } from "@/components";
+import { toAbsoluteUrl } from "@/utils";
+import { useAuthContext } from "@/auth";
+import { useLayout } from "@/providers";
+import { Alert } from "@/components";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
-    .email('Wrong email format')
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Email is required'),
+    .email("Wrong email format")
+    .min(3, "Minimum 3 symbols")
+    .max(50, "Maximum 50 symbols")
+    .required("Email is required"),
   password: Yup.string()
-    .min(3, 'Minimum 3 symbols')
-    .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
+    .min(3, "Minimum 3 symbols")
+    .max(50, "Maximum 50 symbols")
+    .required("Password is required"),
   remember: Yup.boolean()
 });
 
 const initialValues = {
-  email: 'demo@keenthemes.com',
-  password: 'demo1234',
-  remember: false
+  email: "info@evototechnologies.com",
+  password: "admin123",
+  remember: false,
 };
 
 const Login = () => {
@@ -33,7 +33,7 @@ const Login = () => {
   const { login } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
   const [showPassword, setShowPassword] = useState(false);
   const { currentLayout } = useLayout();
 
@@ -45,20 +45,20 @@ const Login = () => {
 
       try {
         if (!login) {
-          throw new Error('JWTProvider is required for this form.');
+          throw new Error("JWTProvider is required for this form.");
         }
 
         await login(values.email, values.password);
 
         if (values.remember) {
-          localStorage.setItem('email', values.email);
+          localStorage.setItem("email", values.email);
         } else {
-          localStorage.removeItem('email');
+          localStorage.removeItem("email");
         }
 
         navigate(from, { replace: true });
       } catch {
-        setStatus('The login details are incorrect');
+        setStatus("The login details are incorrect");
         setSubmitting(false);
       }
       setLoading(false);
@@ -82,7 +82,7 @@ const Login = () => {
           <div className="flex items-center justify-center font-medium">
             <span className="text-2sm text-gray-600 me-1.5">Need an account?</span>
             <Link
-              to={currentLayout?.name === 'auth-branded' ? '/auth/signup' : '/auth/classic/signup'}
+              to={currentLayout?.name === "auth-branded" ? "/auth/signup" : "/auth/classic/signup"}
               className="text-2sm link"
             >
               Sign up
@@ -93,7 +93,7 @@ const Login = () => {
         <div className="grid grid-cols-2 gap-2.5">
           <a href="#" className="btn btn-light btn-sm justify-center">
             <img
-              src={toAbsoluteUrl('/media/brand-logos/google.svg')}
+              src={toAbsoluteUrl("/media/brand-logos/google.svg")}
               className="size-3.5 shrink-0"
             />
             Use Google
@@ -101,11 +101,11 @@ const Login = () => {
 
           <a href="#" className="btn btn-light btn-sm justify-center">
             <img
-              src={toAbsoluteUrl('/media/brand-logos/apple-black.svg')}
+              src={toAbsoluteUrl("/media/brand-logos/apple-black.svg")}
               className="size-3.5 shrink-0 dark:hidden"
             />
             <img
-              src={toAbsoluteUrl('/media/brand-logos/apple-white.svg')}
+              src={toAbsoluteUrl("/media/brand-logos/apple-white.svg")}
               className="size-3.5 shrink-0 light:hidden"
             />
             Use Apple
@@ -119,8 +119,8 @@ const Login = () => {
         </div>
 
         <Alert variant="primary">
-          Use <span className="font-semibold text-gray-900">demo@keenthemes.com</span> username and{' '}
-          <span className="font-semibold text-gray-900">demo1234</span> password.
+          Use <span className="font-semibold text-gray-900">info@evototechnologies.com</span> username and{" "}
+          <span className="font-semibold text-gray-900">admin123</span> password.
         </Alert>
 
         {formik.status && <Alert variant="danger">{formik.status}</Alert>}
@@ -131,9 +131,9 @@ const Login = () => {
             <input
               placeholder="Enter username"
               autoComplete="off"
-              {...formik.getFieldProps('email')}
-              className={clsx('form-control', {
-                'is-invalid': formik.touched.email && formik.errors.email
+              {...formik.getFieldProps("email")}
+              className={clsx("form-control", {
+                "is-invalid": formik.touched.email && formik.errors.email
               })}
             />
           </label>
@@ -149,9 +149,9 @@ const Login = () => {
             <label className="form-label text-gray-900">Password</label>
             <Link
               to={
-                currentLayout?.name === 'auth-branded'
-                  ? '/auth/reset-password'
-                  : '/auth/classic/reset-password'
+                currentLayout?.name === "auth-branded"
+                  ? "/auth/reset-password"
+                  : "/auth/classic/reset-password"
               }
               className="text-2sm link shrink-0"
             >
@@ -160,19 +160,19 @@ const Login = () => {
           </div>
           <label className="input">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
               autoComplete="off"
-              {...formik.getFieldProps('password')}
-              className={clsx('form-control', {
-                'is-invalid': formik.touched.password && formik.errors.password
+              {...formik.getFieldProps("password")}
+              className={clsx("form-control", {
+                "is-invalid": formik.touched.password && formik.errors.password
               })}
             />
             <button className="btn btn-icon" onClick={togglePassword}>
-              <KeenIcon icon="eye" className={clsx('text-gray-500', { hidden: showPassword })} />
+              <KeenIcon icon="eye" className={clsx("text-gray-500", { hidden: showPassword })} />
               <KeenIcon
                 icon="eye-slash"
-                className={clsx('text-gray-500', { hidden: !showPassword })}
+                className={clsx("text-gray-500", { hidden: !showPassword })}
               />
             </button>
           </label>
@@ -187,7 +187,7 @@ const Login = () => {
           <input
             className="checkbox checkbox-sm"
             type="checkbox"
-            {...formik.getFieldProps('remember')}
+            {...formik.getFieldProps("remember")}
           />
           <span className="checkbox-label">Remember me</span>
         </label>
@@ -197,7 +197,7 @@ const Login = () => {
           className="btn btn-primary flex justify-center grow"
           disabled={loading || formik.isSubmitting}
         >
-          {loading ? 'Please wait...' : 'Sign In'}
+          {loading ? "Please wait..." : "Sign In"}
         </button>
       </form>
     </div>

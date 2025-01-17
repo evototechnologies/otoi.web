@@ -188,7 +188,7 @@ const EarningsChart = () => {
             <span className="switch-label order-1">Referrals only</span>
           </label>
 
-          <Select defaultValue="1">
+          <Select defaultValue="3">
             <SelectTrigger className="w-28" size="sm">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
