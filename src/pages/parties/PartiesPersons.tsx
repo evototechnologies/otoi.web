@@ -18,11 +18,12 @@ export interface IPersonModalContentProps {
 
 const PartiesPersonsPage = () => {
   const { currentLayout } = useLayout();
-
+  const [refreshKey, setRefreshKey] = useState(0); // State to trigger refresh
   const [personModalOpen, setPersonModalOpen] = useState(false);
   // handle close
   const handleClose = () => {
     setPersonModalOpen(false);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
   const openPersonModal = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -54,7 +55,7 @@ const PartiesPersonsPage = () => {
       )}
 
       <Container>
-        <PartiesPersonContent />
+        <PartiesPersonContent refreshStatus={refreshKey} />
         <ModalPerson open={personModalOpen} onOpenChange={handleClose} />
       </Container>
     </Fragment>

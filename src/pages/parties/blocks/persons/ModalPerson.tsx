@@ -53,7 +53,6 @@ const savePersonSchema = Yup.object().shape({
   person_type_id: Yup.string().required("Person Type is required"),
 });
 
-
 const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -76,7 +75,7 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
           person_type_id: values.person_type_id,
         };
         await axios.post(
-          `${import.meta.env.VITE_APP_API_URL}/persons`,
+          `${import.meta.env.VITE_APP_API_URL}/persons/`,
           postData,
         );
         onOpenChange();
