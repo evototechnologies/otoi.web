@@ -15,8 +15,13 @@ export const MENU_SIDEBAR: TMenuConfig = [
     children: [
       {
         title: "Persons",
-        path: "/parties/persons"
-      }]
+        path: "/parties/persons",
+      },
+      {
+        title: "Leads",
+        path: "/parties/leads",
+      }
+    ]
   },
   {
     title: "Items",

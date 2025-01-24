@@ -156,7 +156,7 @@ const PartiesPersonContent = ({
         header: ({ column }) => (
           <DataGridColumnHeader title="Type" column={column} />
         ),
-        enableSorting: true,
+        enableSorting: false,
         cell: (info: any) => {
           return info.row.original.person_type;
         },
@@ -170,7 +170,7 @@ const PartiesPersonContent = ({
         header: ({ column }) => (
           <DataGridColumnHeader title="Invoices" column={column} />
         ),
-        enableSorting: true,
+        enableSorting: false,
         cell: () => <button className="btn btn-link">Download</button>,
         meta: {
           headerClassName: "w-28",

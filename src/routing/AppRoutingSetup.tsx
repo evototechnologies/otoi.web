@@ -73,6 +73,7 @@ import {
   NetworkVisitorsPage
 } from '@/pages/network';
 import { PartiesPersonsPage } from '@/pages/parties';
+import { PartiesLeadsPage } from '@/pages/parties/PartiesLeads';
 import { AuthPage } from '@/auth';
 import { RequireAuth } from '@/auth/RequireAuth';
 import { Demo1Layout } from '@/layouts/demo1';
@@ -181,6 +182,7 @@ const AppRoutingSetup = (): ReactElement => {
           <Route path="/network/user-table/visitors" element={<NetworkVisitorsPage />} />
           <Route path="/auth/welcome-message" element={<AuthenticationWelcomeMessagePage />} />
           <Route path="/parties/persons" element={<PartiesPersonsPage />} />
+          <Route path="/parties/leads" element={<PartiesLeadsPage />} />
           <Route
             path="/auth/account-deactivated"
             element={<AuthenticationAccountDeactivatedPage />}

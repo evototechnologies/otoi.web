@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,11 @@ import { DialogClose } from "@radix-ui/react-dialog";
 interface IModalPersonProps {
   open: boolean;
   onOpenChange: () => void;
+}
+
+interface IModalPersonType {
+  id: number;
+  name: string
 }
 
 const initialValues = {
@@ -57,7 +62,24 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const from = "/parties/persons";
-  console.log(from);
+  const [personTypes, setPersonTypes] = useState([]);
+
+  useEffect(() => {
+    // Fetch person types from the API
+    const fetchPersonTypes = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_URL}/person-types/`,
+        );
+        setPersonTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching person types:", error);
+      }
+    };
+
+    fetchPersonTypes();
+  }, []);
+
 
   const formik = useFormik({
     initialValues,
@@ -265,9 +287,11 @@ const ModalPerson = ({ open, onOpenChange }: IModalPersonProps) => {
                       )}
                     >
                       <option value="">--Select--</option>
-                      <option value="1">Customer</option>
-                      <option value="2">Vendor</option>
-                      <option value="3">Service Provider</option>
+                      {personTypes.map((type: IModalPersonType) => (
+                        <option key={type.id} value={type.id}>
+                          {type.name}
+                        </option>
+                      ))}
                     </select>
                   </label>
                   {formik.touched.person_type_id && formik.errors.person_type_id && (
